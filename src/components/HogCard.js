@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import porkers_data from "../porkers_data.js";
+import HogDetails from './HogDetails'
+
 
 // let pigURL = this.props.
 
@@ -7,33 +9,46 @@ import porkers_data from "../porkers_data.js";
 
 class HogCard extends Component {
     // console.log(pigImages.Piglet)
+    constructor() {
+        super()
+        this.state = {
+            detailDisplay: false,
+            hideHog: false
+        }
+    }
 
+    handleDetails = () => {
+        this.setState({
+            detailDisplay: !this.state.detailDisplay
+        })
+    }
+
+    handleHide = () => {
+        this.setState({
+            hideHog: !this.state.hideHog
+        })
+    }
     render() {
-        let newName = this.props.hogs.name.replace(' ', '_').toLowerCase()
-        console.log(newName)
+        let newName = this.props.hog.name.replaceAll(" ", "_").toLowerCase()
+        let pigImage = require(`../hog-imgs/${newName}.jpg`)
+        
         return (
-            <div>
-                {
-
-
-
-                    this.props.hogs.map(hog => {
-                        // console.log(`../hog-imgs/${pigImages[`${hog.name}`]}.jpg`)
-                        // let pigImage = require(`../hog-imgs/${pigImages[`${hog.name}`]}.jpg`)
-                        // console.log(pigImage)
-                        return (<div>
-                            <h1>{hog.name}</h1>
-                            {/* { <img src={pigImage} alt="" />} */}
-                            {/* <h2> specialty</h2>
-                    <h3>weight</h3>
-                    <h4>'highest medal achieved'</h4> */}
+            <div className="ui eight wide column" className="ui card">
+                {this.state.hideHog === true ? null :
+                    <div >
+                        <h1>{this.props.hog.name}</h1>
+                        <div className="image">
+                        <img src={pigImage} alt="" width = "200px"/>
                         </div>
-                            // )
-                        )
-                    })
+                        <div>
+                            <button onClick={() => this.handleDetails()}>Show Hog Details</button>
+                        </div>
+                        {this.state.detailDisplay === true ? <HogDetails hog={this.props.hog}/> : null}
+                        <button onClick={() => this.handleHide()}>Hide Hog</button>
+                    </div>
                 }
-            </div >
-        )
+            </div>
+            )
     }
 }
 
